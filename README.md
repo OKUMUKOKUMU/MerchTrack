@@ -1,4 +1,4 @@
-# Brown's MerchTrack
+# MerchTrack
 
 MerchTrack is a comprehensive, mobile-first **Retail Execution and Field Merchandising application**. It is designed to empower your entire field team—from merchandisers on the ground to directors in the head office—with the tools they need to track store visits, ensure compliance, monitor sales performance, and make data-driven decisions.
 
