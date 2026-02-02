@@ -1,0 +1,514 @@
+{
+  "entities": {
+    "Merchandiser": {
+      "title": "Merchandiser",
+      "type": "object",
+      "description": "Represents a merchandiser who uses the app.",
+      "properties": {
+        "id": {
+          "type": "string",
+          "description": "Unique identifier for the Merchandiser entity."
+        },
+        "firstName": {
+          "type": "string",
+          "description": "The first name of the merchandiser."
+        },
+        "lastName": {
+          "type": "string",
+          "description": "The last name of the merchandiser."
+        },
+        "email": {
+          "type": "string",
+          "description": "The email address of the merchandiser.",
+          "format": "email"
+        },
+        "phoneNumber": {
+          "type": "string",
+          "description": "The phone number of the merchandiser."
+        },
+        "employeeNumber": {
+          "type": "string",
+          "description": "The unique employee number assigned to the merchandiser."
+        },
+        "idNumber": {
+          "type": "string",
+          "description": "A national or other official identification number."
+        },
+        "role": {
+          "type": "string",
+          "description": "The role of the user.",
+          "enum": [
+            "merchandiser",
+            "supervisor",
+            "manager",
+            "director",
+            "admin"
+          ]
+        }
+      },
+      "required": [
+        "id",
+        "firstName",
+        "lastName",
+        "email",
+        "role",
+        "phoneNumber",
+        "employeeNumber",
+        "idNumber"
+      ]
+    },
+    "Store": {
+      "title": "Store",
+      "type": "object",
+      "description": "Represents a store where merchandisers perform activities.",
+      "properties": {
+        "id": {
+          "type": "string",
+          "description": "Unique identifier for the Store entity."
+        },
+        "name": {
+          "type": "string",
+          "description": "The name of the store."
+        },
+        "address": {
+          "type": "string",
+          "description": "The address of the store."
+        },
+        "latitude": {
+          "type": "number",
+          "description": "The latitude coordinate of the store's location."
+        },
+        "longitude": {
+          "type": "number",
+          "description": "The longitude coordinate of the store's location."
+        }
+      },
+      "required": [
+        "id",
+        "name",
+        "address",
+        "latitude",
+        "longitude"
+      ]
+    },
+    "Task": {
+      "title": "Task",
+      "type": "object",
+      "description": "Represents a task assigned to a merchandiser.",
+      "properties": {
+        "id": {
+          "type": "string",
+          "description": "Unique identifier for the Task entity."
+        },
+        "title": {
+          "type": "string",
+          "description": "The title of the task."
+        },
+        "description": {
+          "type": "string",
+          "description": "A detailed description of the task."
+        },
+        "merchandiserId": {
+          "type": "string",
+          "description": "Reference to Merchandiser. (Relationship: Merchandiser 1:N Task)"
+        },
+        "storeId": {
+          "type": "string",
+          "description": "Reference to Store. (Relationship: Store 1:N Task)"
+        },
+        "storeName": {
+          "type": "string",
+          "description": "The name of the store (denormalized)."
+        },
+        "deadline": {
+          "type": "string",
+          "description": "The deadline for the task completion.",
+          "format": "date-time"
+        },
+        "priority": {
+          "type": "string",
+          "description": "The priority level of the task (e.g., high, medium, low).",
+          "enum": [
+            "High",
+            "Medium",
+            "Low"
+          ]
+        },
+        "status": {
+          "type": "string",
+          "description": "The current status of the task (e.g., open, in progress, completed).",
+          "enum": [
+            "To Do",
+            "In Progress",
+            "Complete"
+          ]
+        }
+      },
+      "required": [
+        "id",
+        "title",
+        "merchandiserId",
+        "storeId",
+        "storeName",
+        "deadline",
+        "priority",
+        "status"
+      ]
+    },
+    "ActivityLog": {
+      "title": "ActivityLog",
+      "type": "object",
+      "description": "Represents a log of a merchandiser's activity.",
+      "properties": {
+        "id": {
+          "type": "string",
+          "description": "Unique identifier for the ActivityLog entity."
+        },
+        "merchandiserId": {
+          "type": "string",
+          "description": "Reference to Merchandiser. (Relationship: Merchandiser 1:N ActivityLog)"
+        },
+        "storeId": {
+          "type": "string",
+          "description": "Reference to Store. (Relationship: Store 1:N ActivityLog)"
+        },
+        "storeName": {
+          "type": "string",
+          "description": "Name of the store visited (denormalized)."
+        },
+        "activityType": {
+          "type": "string",
+          "description": "The type of activity performed (e.g., store visit, planogram check)."
+        },
+        "startTime": {
+          "type": "string",
+          "description": "The start time of the activity.",
+          "format": "date-time"
+        },
+        "endTime": {
+          "type": "string",
+          "description": "The end time of the activity.",
+          "format": "date-time"
+        },
+        "latitude": {
+          "type": "number",
+          "description": "The latitude coordinate of the activity location."
+        },
+        "longitude": {
+          "type": "number",
+          "description": "The longitude coordinate of the activity location."
+        },
+        "notes": {
+          "type": "string",
+          "description": "Any notes or observations recorded during the activity."
+        },
+        "status": {
+          "type": "string",
+          "description": "The status of the visit (e.g., completed, partial, missed).",
+          "enum": [
+            "completed",
+            "partial",
+            "missed"
+          ]
+        },
+        "photoUrl": {
+          "type": "string",
+          "description": "URL of a photo taken during the visit.",
+          "format": "uri"
+        },
+        "locationVerified": {
+          "type": "boolean",
+          "description": "Whether the merchandiser's location was within the store's radius at the time of logging."
+        },
+        "salesReports": {
+          "type": "array",
+          "description": "An array of sales reports for products recorded during this visit.",
+          "items": {
+            "type": "object",
+            "properties": {
+              "productId": {
+                "type": "string",
+                "description": "The ID of the product."
+              },
+              "productName": {
+                "type": "string",
+                "description": "The name of the product (denormalized)."
+              },
+              "quantitySold": {
+                "type": "number",
+                "description": "The quantity of the product sold."
+              },
+              "stockLevel": {
+                "type": "number",
+                "description": "The current stock level of the product."
+              }
+            },
+            "required": [
+              "productId",
+              "productName",
+              "quantitySold",
+              "stockLevel"
+            ]
+          }
+        }
+      },
+      "required": [
+        "id",
+        "merchandiserId",
+        "storeId",
+        "storeName",
+        "activityType",
+        "startTime",
+        "endTime",
+        "latitude",
+        "longitude",
+        "status",
+        "locationVerified"
+      ]
+    },
+    "PlanogramCompliance": {
+      "title": "PlanogramCompliance",
+      "type": "object",
+      "description": "Represents the planogram compliance check result for a store visit.",
+      "properties": {
+        "id": {
+          "type": "string",
+          "description": "Unique identifier for the PlanogramCompliance entity."
+        },
+        "activityLogId": {
+          "type": "string",
+          "description": "Reference to ActivityLog. (Relationship: ActivityLog 1:N PlanogramCompliance)"
+        },
+        "complianceScore": {
+          "type": "number",
+          "description": "A score indicating the level of planogram compliance (e.g., 0-100)."
+        },
+        "imageURL": {
+          "type": "string",
+          "description": "URL of the image used for planogram compliance check.",
+          "format": "uri"
+        },
+        "feedback": {
+          "type": "string",
+          "description": "Feedback from the image recognition tool regarding compliance."
+        }
+      },
+      "required": [
+        "id",
+        "activityLogId",
+        "complianceScore",
+        "imageURL"
+      ]
+    },
+    "AssignedStore": {
+      "title": "Assigned Store",
+      "type": "object",
+      "description": "Represents a store assigned to a merchandiser, defining their route. The document ID is the storeId.",
+      "properties": {
+        "expectedVisitFrequency": {
+          "type": "string",
+          "description": "How often the store should be visited.",
+          "enum": [
+            "daily",
+            "weekly",
+            "bi-weekly",
+            "monthly"
+          ]
+        }
+      }
+    },
+    "Product": {
+      "title": "Product",
+      "type": "object",
+      "description": "Represents a product that merchandisers track.",
+      "properties": {
+        "id": {
+          "type": "string",
+          "description": "Unique identifier for the Product entity."
+        },
+        "name": {
+          "type": "string",
+          "description": "The name of the product."
+        },
+        "sku": {
+          "type": "string",
+          "description": "The Stock Keeping Unit (SKU) of the product."
+        },
+        "description": {
+          "type": "string",
+          "description": "A description of the product."
+        }
+      },
+      "required": [
+        "id",
+        "name",
+        "sku"
+      ]
+    },
+    "ProductTarget": {
+      "title": "Product Target",
+      "type": "object",
+      "description": "Holds the target information for a specific product at a specific store.",
+      "properties": {
+        "id": {
+          "type": "string",
+          "description": "Unique identifier for the ProductTarget entity."
+        },
+        "productId": {
+          "type": "string",
+          "description": "Identifier for the product."
+        },
+        "targetQuantity": {
+          "type": "number",
+          "description": "The target quantity for the specified period."
+        },
+        "period": {
+          "type": "string",
+          "enum": [
+            "daily",
+            "weekly",
+            "monthly"
+          ],
+          "description": "The time period for which the target is set."
+        }
+      },
+      "required": [
+        "id",
+        "productId",
+        "targetQuantity",
+        "period"
+      ]
+    },
+    "SalesReport": {
+      "title": "Sales Report",
+      "type": "object",
+      "description": "Represents a sales report for a specific product during a visit.",
+      "properties": {
+        "id": {
+          "type": "string",
+          "description": "Unique identifier for the SalesReport entity."
+        },
+        "productId": {
+          "type": "string",
+          "description": "The ID of the product."
+        },
+        "quantitySold": {
+          "type": "number",
+          "description": "The quantity of the product sold since the last visit."
+        },
+        "stockLevel": {
+          "type": "number",
+          "description": "The current stock level of the product."
+        }
+      },
+      "required": [
+        "id",
+        "productId",
+        "quantitySold",
+        "stockLevel"
+      ]
+    },
+    "MarketEvent": {
+      "title": "Market Event",
+      "type": "object",
+      "description": "Represents a market event or promotion.",
+      "properties": {
+        "id": {
+          "type": "string",
+          "description": "Unique identifier for the MarketEvent entity."
+        },
+        "name": {
+          "type": "string",
+          "description": "The name of the event or promotion."
+        },
+        "description": {
+          "type": "string",
+          "description": "A detailed description of the event."
+        },
+        "startDate": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "endDate": {
+          "type": "string",
+          "format": "date-time"
+        }
+      },
+      "required": [
+        "id",
+        "name",
+        "description",
+        "startDate",
+        "endDate"
+      ]
+    }
+  },
+  "auth": {
+    "providers": [
+      "password",
+      "google.com"
+    ]
+  },
+  "firestore": {
+    "/merchandisers/{merchandiserId}": {
+      "schema": {
+        "$ref": "#/entities/Merchandiser"
+      },
+      "description": "Stores merchandiser profile information."
+    },
+    "/merchandisers/{merchandiserId}/assignedStores/{storeId}": {
+      "schema": {
+        "$ref": "#/entities/AssignedStore"
+      },
+      "description": "Maps stores to merchandisers, defining their route."
+    },
+    "/stores/{storeId}": {
+      "schema": {
+        "$ref": "#/entities/Store"
+      },
+      "description": "Stores store information. All merchandisers have read access to these documents."
+    },
+    "/products/{productId}": {
+      "schema": {
+        "$ref": "#/entities/Product"
+      },
+      "description": "Stores information about individual products."
+    },
+    "/stores/{storeId}/productTargets/{productId}": {
+      "schema": {
+        "$ref": "#/entities/ProductTarget"
+      },
+      "description": "Stores product-specific sales or stocking targets for a given store."
+    },
+    "/merchandisers/{merchandiserId}/tasks/{taskId}": {
+      "schema": {
+        "$ref": "#/entities/Task"
+      },
+      "description": "Stores tasks assigned to a specific merchandiser."
+    },
+    "/merchandisers/{merchandiserId}/activityLogs/{activityLogId}": {
+      "schema": {
+        "$ref": "#/entities/ActivityLog"
+      },
+      "description": "Stores activity logs for a specific merchandiser."
+    },
+    "/merchandisers/{merchandiserId}/activityLogs/{activityLogId}/planogramCompliances/{planogramComplianceId}": {
+      "schema": {
+        "$ref": "#/entities/PlanogramCompliance"
+      },
+      "description": "Stores planogram compliance check results for a specific activity log."
+    },
+    "/merchandisers/{merchandiserId}/activityLogs/{activityLogId}/salesReports/{productId}": {
+      "schema": {
+        "$ref": "#/entities/SalesReport"
+      },
+      "description": "Stores sales data for a specific product recorded during an activity."
+    },
+    "/marketEvents/{eventId}": {
+      "schema": {
+        "$ref": "#/entities/MarketEvent"
+      },
+      "description": "Stores details about market events and promotions."
+    }
+  }
+}
