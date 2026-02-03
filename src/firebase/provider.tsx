@@ -9,8 +9,8 @@ import { FirebaseErrorListener } from '@/components/FirebaseErrorListener'
 interface FirebaseProviderProps {
   children: ReactNode;
   firebaseApp: FirebaseApp;
-  firestore: Firestore;
-  auth: Auth;
+  auth: Auth;          // auth should be second
+  firestore: Firestore; // firestore should be third
 }
 
 // Internal state for user authentication
@@ -55,11 +55,12 @@ export const FirebaseContext = createContext<FirebaseContextState | undefined>(u
 /**
  * FirebaseProvider manages and provides Firebase services and user authentication state.
  */
+
 export const FirebaseProvider: React.FC<FirebaseProviderProps> = ({
   children,
   firebaseApp,
-  firestore,
-  auth,
+  auth,        // Changed: auth second
+  firestore,   // Changed: firestore third
 }) => {
   const [userAuthState, setUserAuthState] = useState<UserAuthState>({
     user: null,

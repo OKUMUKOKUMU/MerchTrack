@@ -18,7 +18,7 @@ export default function SignupPage() {
   const { toast } = useToast();
   const auth = useAuth();
   const firestore = useFirestore();
-  const { user, loading: isUserLoading } = useUser();
+  const { user, isUserLoading } = useUser();
 
   const [firstName, setFirstName] = useState('');
   const [lastName, setLastName] = useState('');
